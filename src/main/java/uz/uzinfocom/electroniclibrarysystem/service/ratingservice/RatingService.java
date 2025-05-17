@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RatingService {
     ResponseEntity<RatingResponse> rateBook(RatingRequest request);
-
+    ResponseEntity<RatingResponse> updateRating(Long ratingId, RatingRequest request);
 
     ResponseEntity<List<RatingResponse>> getAllRatingByBook(Long bookId);
 }

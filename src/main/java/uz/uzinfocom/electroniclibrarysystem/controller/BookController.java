@@ -17,20 +17,20 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
-    // Faqat admin va operatorlar
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PostMapping
     public ResponseEntity<BookResponse> addBook(@Valid @RequestBody BookRequest request) {
         return bookService.addBook(request);
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @Valid @RequestBody BookRequest request) {
         return bookService.updateBook(id, request);
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<BookResponse> deleteBook(@PathVariable Long id) {
         return bookService.deleteBook(id);
@@ -39,6 +39,6 @@ public class BookController {
     // Hamma ko'radi
     @GetMapping
     public ResponseEntity<List<BookResponse>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+        return bookService.getAllBooks();
     }
 }

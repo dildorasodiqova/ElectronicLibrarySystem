@@ -1,5 +1,8 @@
 package uz.uzinfocom.electroniclibrarysystem.DTO.req;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +12,13 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RatingRequest {
-    //     Long userId;
+
+    @NotNull(message = "User ID is required")
+    Long userId;
+
+    @NotNull(message = "Book ID is required")
     Long bookId;
-    int stars; // 0 to 5
+    @Min(1)
+    @Max(5)
+    int stars;
 }

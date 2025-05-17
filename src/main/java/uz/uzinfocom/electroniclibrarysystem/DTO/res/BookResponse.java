@@ -2,6 +2,7 @@ package uz.uzinfocom.electroniclibrarysystem.DTO.res;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import uz.uzinfocom.electroniclibrarysystem.entity.Book;
 
 @Getter
 @Setter
@@ -13,5 +14,16 @@ public class BookResponse {
     String title;
     String author;
     Integer pricePerDay;
-    Integer quantity;
+    Boolean isDeleted;
+    Boolean isBron;
+
+    public BookResponse convert(Book book) {
+        BookResponse response = new BookResponse();
+        response.setId(book.getId());
+        response.setTitle(book.getTitle());
+        response.setAuthor(book.getAuthor());
+        response.setPricePerDay(book.getPricePerDay());
+        response.setIsDeleted(book.getIsDeleted());
+        return response;
+    }
 }

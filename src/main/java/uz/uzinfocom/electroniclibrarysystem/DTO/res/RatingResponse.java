@@ -2,6 +2,7 @@ package uz.uzinfocom.electroniclibrarysystem.DTO.res;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import uz.uzinfocom.electroniclibrarysystem.entity.Rating;
 
 import java.time.LocalDateTime;
 @Getter
@@ -10,8 +11,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RatingResponse {
+    Long id;
+    Long bookId;
     String bookTitle;
     String userFullName;
     int stars;
-    LocalDateTime reviewDate;
+
+
+    public RatingResponse convert(Rating rating) {
+        RatingResponse response = new RatingResponse();
+        response.setBookId(rating.getId());
+        response.setBookId(rating.getBook().getId());
+        response.setBookTitle(rating.getBook().getTitle());
+        response.setUserFullName(rating.getUser().getFullName());
+        response.setStars(response.getStars());
+        return response;
+    }
 }

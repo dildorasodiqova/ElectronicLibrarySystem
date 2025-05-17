@@ -17,24 +17,33 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    // Foydalanuvchi buyurtma qiladi
+
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<OrderResponse> makeOrder(@Valid @RequestBody OrderRequest request) {
         return orderService.makeOrder(request);
     }
 
-    // Operator buyurtmalarni ko'radi
+
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
-    @GetMapping
-    public ResponseEntity<List<OrderResponse>> viewOrders() {
-        return orderService.viewAllOrders();
+    @GetMapping("/userId")
+    public ResponseEntity<List<OrderResponse>> viewOrders(@PathVariable Long userId) {
+        return orderService.viewAllOrders(userId);
     }
 
-    // Operator tasdiqlaydi
+
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PostMapping("/{id}/accept")
     public ResponseEntity<OrderResponse> acceptOrder(@PathVariable Long id) {
         return orderService.acceptOrder(id);
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @GetMapping("/return-order")
+    public ResponseEntity<OrderResponse> returnOrder(Long id){
+        return orderService.returnOrder(id);
+    }
+
+
 }

@@ -4,9 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import uz.uzinfocom.electroniclibrarysystem.enums.OrderStatus;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,18 +11,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Order extends BaseModel{
+public class Payment extends BaseModel{
     @ManyToOne
-    User user;
+    Order order;
 
-    @ManyToOne
-    Book book;
+    Boolean paymentOrNot; //  true bolsa tolandi shu pul , false bolsa tolanmadi
+    Double totalSumma; // qancha tolangani
+    boolean fine; // bu jarima  true bo'lsa jarima bo'ladi false bo'lsa orderni o'zini narhi bo'ladi , jarimalarni korish uchun kk
 
-    LocalDate startDate;
-    LocalDate endDate;
-    LocalDate returnedDate;
-
-    OrderStatus status;
-
-    Double fineAmount = 0D;
 }

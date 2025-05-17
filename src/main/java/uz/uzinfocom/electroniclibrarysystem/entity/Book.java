@@ -15,8 +15,9 @@ public class Book extends BaseModel {
     String title;
     String author;
     Integer pricePerDay; // 1000 so‘m kabi
-    private int quantity; // mavjud soni
-    @ManyToOne
-    private Library library;
+    Boolean isBron;
+
+
+
 
 }

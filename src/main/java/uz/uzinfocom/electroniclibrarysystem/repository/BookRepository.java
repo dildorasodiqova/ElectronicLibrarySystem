@@ -9,5 +9,8 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<BookResponse>findByTitleAndAuthor(String title, String author);
+    List<BookResponse>findByTitleAndAuthorAndIsDeletedTrue(String title, String author);
+
+    List<Book> findAllByIsDeletedTrue();
+
 }

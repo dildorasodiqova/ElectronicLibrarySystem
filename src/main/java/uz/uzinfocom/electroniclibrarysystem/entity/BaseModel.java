@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class BaseModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -28,4 +28,6 @@ public class BaseModel {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    private Boolean isDeleted = false;
 }
