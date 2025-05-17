@@ -25,7 +25,7 @@ public class OrderResponse {
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setId(order.getId());
         orderResponse.setBookTitle(order.getBook().getTitle());
-        orderResponse.setUserFullName(order.getUser().getFullName());
+        orderResponse.setUserFullName(order.getUserEntity().getFullName());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
         orderResponse.setReturnedDate(order.getReturnedDate());

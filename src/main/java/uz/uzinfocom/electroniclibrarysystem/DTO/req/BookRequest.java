@@ -38,4 +38,7 @@ public class BookRequest {
         book.setPricePerDay(getPricePerDay());
         return book;
     }
+
+
+
 }

@@ -1,14 +1,15 @@
 package uz.uzinfocom.electroniclibrarysystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+import javax.persistence.Entity;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Book extends BaseModel {
@@ -16,8 +17,6 @@ public class Book extends BaseModel {
     String author;
     Integer pricePerDay; // 1000 so‘m kabi
     Boolean isBron;
-
-
 
 
 }

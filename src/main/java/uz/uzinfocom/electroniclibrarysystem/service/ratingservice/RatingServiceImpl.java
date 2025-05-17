@@ -7,7 +7,7 @@ import uz.uzinfocom.electroniclibrarysystem.DTO.req.RatingRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.RatingResponse;
 import uz.uzinfocom.electroniclibrarysystem.entity.Book;
 import uz.uzinfocom.electroniclibrarysystem.entity.Rating;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
 import uz.uzinfocom.electroniclibrarysystem.enums.OrderStatus;
 import uz.uzinfocom.electroniclibrarysystem.exception.ExceptionWithStatusCode;
 import uz.uzinfocom.electroniclibrarysystem.repository.RatingRepository;
@@ -37,9 +37,9 @@ public class RatingServiceImpl implements RatingService{
         if (!exists) {
             throw new ExceptionWithStatusCode(400, "You haven't received this book or haven't returned it yet, so it can't be rated");
         }
-            User user = userService.findById(request.getUserId());
+            UserEntity userEntity = userService.findById(request.getUserId());
             Book book = bookService.findById(request.getBookId());
-            Rating rating = new Rating(user, book, request.getStars());
+            Rating rating = new Rating(userEntity, book, request.getStars());
             ratingRepository.save(rating);
             return ResponseEntity.ok(new RatingResponse().convert(rating));
 

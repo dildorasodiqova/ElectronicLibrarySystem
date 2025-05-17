@@ -8,10 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.uzinfocom.electroniclibrarysystem.DTO.req.PasswordUpdateRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.req.UserRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.UserResponse;
 import uz.uzinfocom.electroniclibrarysystem.config.jwt.JwtUtil;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
 import uz.uzinfocom.electroniclibrarysystem.exception.ExceptionWithStatusCode;
 import uz.uzinfocom.electroniclibrarysystem.repository.UserRepository;
 
@@ -25,8 +26,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+
+
     @Override
-    public User findById(Long userId) {
+    public UserEntity findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new ExceptionWithStatusCode(404, "User not found"));
     }
 
@@ -42,26 +45,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserResponse> register(UserRequest user) {
-        if (userRepository.findByUsername(user.getUsername())) {
+        if (userRepository.existsByUsername(user.getUsername())) {
             throw new ExceptionWithStatusCode(400, "This username already exists");
         }
-        User user1 = user.create();
-        user1.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user1);
-        return ResponseEntity.ok(new UserResponse().convert(user1));
+        UserEntity userEntity1 = user.create();
+        userEntity1.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(userEntity1);
+        return ResponseEntity.ok(new UserResponse().convert(userEntity1));
     }
 
     @Override
-    public ResponseEntity<UserResponse> updatePassword(Long userId, UserRequest.PasswordUpdateRequest request) {
-        User user = userRepository.findById(userId)
+    public ResponseEntity<UserResponse> updatePassword(Long userId, PasswordUpdateRequest request) {
+        UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ExceptionWithStatusCode(404, "User not found "));
 
-        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.getOldPassword(), userEntity.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
 
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok(new UserResponse().convert(user));
+        userEntity.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(userEntity);
+        return ResponseEntity.ok(new UserResponse().convert(userEntity));
     }
 }

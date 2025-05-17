@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<OrderResponse> makeOrder(OrderRequest request) {
         Order order = request.create();
-        order.setUser(userService.findById(request.getUserId()));
+        order.setUserEntity(userService.findById(request.getUserId()));
 
         Book book = bookService.findById(request.getBookId());
         if (book.getIsBron()) {
@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<List<OrderResponse>> viewAllOrders(Long userId) {
-        return ResponseEntity.ok(orderRepository.findAllByUserId(userId).stream().map(order -> new OrderResponse().convert(order)).collect(Collectors.toList()));
+        return ResponseEntity.ok(orderRepository.findAllByUserEntityId(userId).stream().map(order -> new OrderResponse().convert(order)).collect(Collectors.toList()));
     }
 
     public ResponseEntity<OrderResponse> acceptOrder(Long orderId) {
@@ -93,14 +93,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean existsByUserIdAndBookIdAndStatusIn(Long userId, Long bookId, List<OrderStatus> statuses) {
-        return orderRepository.existsByUserIdAndBookIdAndStatusIn(userId, bookId, statuses);
+        return orderRepository.existsByUserEntityIdAndBookIdAndStatusIn(userId, bookId, statuses);
     }
 
 
     @Scheduled(cron = "0 0 0 * * *") // H
     public void removeExpiredBookings() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        List<Order> expiredOrders = orderRepository.findExpiredBookings(yesterday);
+        List<Order> expiredOrders = orderRepository.findExpiredBookings(yesterday,OrderStatus.BOOKED );
 
         for (Order order : expiredOrders) {
 

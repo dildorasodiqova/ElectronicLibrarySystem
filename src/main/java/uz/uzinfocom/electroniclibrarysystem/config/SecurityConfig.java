@@ -1,6 +1,5 @@
 package uz.uzinfocom.electroniclibrarysystem.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,7 +25,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -33,18 +32,31 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/v3/api-docs/**",
-            "/swagger-resources",
+            "/swagger-resources/**",
             "/swagger-ui/**",
+            "/swagger-ui.html",
             "/auth/login",
-            "/auth/password"
+            "/auth/password",
+            "/auth/register",
+            "/auth/login",
+            "/book/getAll",
+            "/rating/bookId"
     };
+
+    public SecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with the configuration source
-                .authorizeHttpRequests(register -> register
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(Arrays.stream(AUTH_WHITELIST)
+                                .map(AntPathRequestMatcher::new)
+                                .toArray(AntPathRequestMatcher[]::new))
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

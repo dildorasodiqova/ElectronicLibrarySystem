@@ -1,16 +1,17 @@
 package uz.uzinfocom.electroniclibrarysystem.service.userservice;
 
 import org.springframework.http.ResponseEntity;
+import uz.uzinfocom.electroniclibrarysystem.DTO.req.PasswordUpdateRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.req.UserRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.UserResponse;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
 
 public interface UserService {
-    User findById(Long userId);
+    UserEntity findById(Long userId);
 
     ResponseEntity<String> login(String username, String password);
 
     ResponseEntity<UserResponse> register(UserRequest user);
 
-    ResponseEntity<UserResponse> updatePassword(Long userId, UserRequest.PasswordUpdateRequest request);
+    ResponseEntity<UserResponse> updatePassword(Long userId, PasswordUpdateRequest request);
 }

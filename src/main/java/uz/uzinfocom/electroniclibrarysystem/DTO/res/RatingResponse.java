@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import uz.uzinfocom.electroniclibrarysystem.entity.Rating;
 
-import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,7 +22,7 @@ public class RatingResponse {
         response.setBookId(rating.getId());
         response.setBookId(rating.getBook().getId());
         response.setBookTitle(rating.getBook().getTitle());
-        response.setUserFullName(rating.getUser().getFullName());
+        response.setUserFullName(rating.getUserEntity().getFullName());
         response.setStars(response.getStars());
         return response;
     }

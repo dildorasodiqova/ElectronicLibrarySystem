@@ -1,10 +1,8 @@
 package uz.uzinfocom.electroniclibrarysystem.DTO.res;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
 import uz.uzinfocom.electroniclibrarysystem.enums.Roles;
 
 @Getter
@@ -18,12 +16,12 @@ public class UserResponse {
     String username;
     Roles role;
 
-    public UserResponse convert(User user) {
+    public UserResponse convert(UserEntity userEntity) {
         UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setFullName(user.getFullName());
-        response.setUsername(user.getUsername());
-        response.setRole(user.getRole());
+        response.setId(userEntity.getId());
+        response.setFullName(userEntity.getFullName());
+        response.setUsername(userEntity.getUsername());
+        response.setRole(userEntity.getRole());
         return response;
     }
 }

@@ -9,6 +9,7 @@ import uz.uzinfocom.electroniclibrarysystem.DTO.req.RatingRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.RatingResponse;
 import uz.uzinfocom.electroniclibrarysystem.service.ratingservice.RatingService;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,7 @@ public class RatingController {
        return ratingService.updateRating(ratingId, request);
     }
 
+    @PermitAll
     @GetMapping("/bookId")
     public ResponseEntity<List<RatingResponse>> getAllRatingByBook(@RequestParam Long bookId){
         return ratingService.getAllRatingByBook(bookId);

@@ -1,7 +1,6 @@
 package uz.uzinfocom.electroniclibrarysystem.controller;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +8,17 @@ import uz.uzinfocom.electroniclibrarysystem.DTO.req.BookRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.BookResponse;
 import uz.uzinfocom.electroniclibrarysystem.service.bookservice.BookService;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
 @RequestMapping("/book")
-@RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
@@ -36,8 +39,8 @@ public class BookController {
         return bookService.deleteBook(id);
     }
 
-    // Hamma ko'radi
-    @GetMapping
+    @PermitAll
+    @GetMapping("/getAll")
     public ResponseEntity<List<BookResponse>> getAllBooks() {
         return bookService.getAllBooks();
     }

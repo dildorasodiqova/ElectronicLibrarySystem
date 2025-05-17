@@ -4,13 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
 
 import java.security.Key;
 import java.util.Date;
@@ -19,8 +17,6 @@ import java.util.function.Function;
 
 @Component
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class JwtUtil {
 //    @Value("${jwt.secret.key}")
 //    private String SECRET_KEY;
@@ -42,16 +38,16 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails, User user) {
+    public String generateToken(UserDetails userDetails, UserEntity userEntity) {
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .claim("user", Map.of(
-                        "id", user.getId(),
-                        "username", user.getUsername(),
-                        "fullName", user.getFullName(),
-                        "roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
+                        "id", userEntity.getId(),
+                        "username", userEntity.getUsername(),
+                        "fullName", userEntity.getFullName(),
+                        "roles", userEntity.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
                 ))                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiry
                 .signWith(SECRET_KEY_V2, SignatureAlgorithm.HS512)
                 .compact();

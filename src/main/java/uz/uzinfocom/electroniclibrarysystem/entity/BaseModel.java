@@ -1,33 +1,37 @@
 package uz.uzinfocom.electroniclibrarysystem.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
-import java.time.Instant;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
-public class BaseModel {
+public abstract class BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+     Long id;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+     LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+     LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+     LocalDateTime deletedAt;
 
-    private Boolean isDeleted = false;
+     Boolean isDeleted = false;
+
+
 }

@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import uz.uzinfocom.electroniclibrarysystem.entity.User;
+import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
+import uz.uzinfocom.electroniclibrarysystem.enums.Roles;
 
 import java.time.LocalDateTime;
 
@@ -24,30 +25,17 @@ public class UserRequest {
     @Size(min = 6, message = "Password must be at least 6 characters")
     String password;
 
-    public User create() {
-        User user = new User();
-        user.setCreatedAt(LocalDateTime.now().now());
-        user.setUsername(getUsername());
-        user.setFullName(getFullName());
-        return user;
+    public UserEntity create() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setCreatedAt(LocalDateTime.now());
+        userEntity.setUsername(getUsername());
+        userEntity.setFullName(getFullName());
+        userEntity.setRole(Roles.USER);
+        return userEntity;
 
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    public static class LoginDto {
-        private String username;
-        private String password;
-    }
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    public class PasswordUpdateRequest {
-        private String oldPassword;
-        private String newPassword;
-    }
+
+
 
 }

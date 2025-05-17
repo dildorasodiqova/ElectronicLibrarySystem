@@ -1,9 +1,10 @@
 package uz.uzinfocom.electroniclibrarysystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter

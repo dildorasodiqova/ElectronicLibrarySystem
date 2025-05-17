@@ -12,11 +12,11 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findAllByUserId(Long user_id);
+    List<Order> findAllByUserEntityId(Long user_id);
 
-    @Query("SELECT o FROM Order o WHERE o.status = 'BOOKED' AND o.startDate < :yesterday")
-    List<Order> findExpiredBookings(@Param("yesterday") LocalDate yesterday);
+    @Query("SELECT o FROM Order o WHERE o.status = :status  AND o.startDate < :yesterday")
+    List<Order> findExpiredBookings(@Param("yesterday") LocalDate yesterday, @Param("status") OrderStatus status);
 
-    boolean existsByUserIdAndBookIdAndStatusIn(Long userId, Long bookId, List<OrderStatus> statuses);
+    boolean existsByUserEntityIdAndBookIdAndStatusIn(Long userId, Long bookId, List<OrderStatus> statuses);
 
 }

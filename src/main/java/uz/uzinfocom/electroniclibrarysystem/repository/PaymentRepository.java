@@ -16,14 +16,14 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     @Query(value = """
     SELECT 
-        DATE(p.created_at) AS date,     -- 1. created_at ustunidan faqat sana qismini oladi (vaqtni emas)
-        SUM(p.total_summa) AS totalAmount    -- 2. Har bir kun uchun jami tushgan summani hisoblaydi
-    FROM payment p                       -- 3. `payment` dan olamiz
-    WHERE p.payment_or_not = true        -- 4. faqat pul to'langanlarini
-      AND p.created_at >= :startDate     -- shu kundan boshlab
-      AND p.created_at <= :endDate       --shu kungacha 
-    GROUP BY DATE(p.created_at)          --natijani har bir kun boyicha gruhledi
-    ORDER BY DATE(p.created_at)          --sanalarni ketma ket chiqaradi eski sanadan yangisiga qarab o'sish tartibida
+        DATE(p.created_at) AS date,    
+        SUM(p.total_summa) AS totalAmount   
+    FROM payment p                      
+    WHERE p.payment_or_not = true       
+      AND p.created_at >= :startDate   
+      AND p.created_at <= :endDate      
+    GROUP BY DATE(p.created_at)         
+    ORDER BY DATE(p.created_at)         
     """, nativeQuery = true)
     List<Object[]> getLast7DayPayments(@Param("startDate") LocalDateTime startDate,
                                        @Param("endDate") LocalDateTime endDate);
