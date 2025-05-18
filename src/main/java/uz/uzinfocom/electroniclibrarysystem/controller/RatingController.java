@@ -23,7 +23,7 @@ public class RatingController {
         return ratingService.rateBook(request);
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PutMapping
     ResponseEntity<RatingResponse> updateRating(Long ratingId, @Valid  @RequestBody RatingRequest request){
        return ratingService.updateRating(ratingId, request);

@@ -13,6 +13,7 @@ import uz.uzinfocom.electroniclibrarysystem.DTO.req.UserRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.UserResponse;
 import uz.uzinfocom.electroniclibrarysystem.config.jwt.JwtUtil;
 import uz.uzinfocom.electroniclibrarysystem.entity.UserEntity;
+import uz.uzinfocom.electroniclibrarysystem.enums.Roles;
 import uz.uzinfocom.electroniclibrarysystem.exception.ExceptionWithStatusCode;
 import uz.uzinfocom.electroniclibrarysystem.repository.UserRepository;
 
@@ -66,5 +67,19 @@ public class UserServiceImpl implements UserService {
         userEntity.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(userEntity);
         return ResponseEntity.ok(new UserResponse().convert(userEntity));
+    }
+
+
+    @Override
+    public ResponseEntity<UserResponse> changeRole(Long id, Roles role) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new ExceptionWithStatusCode(404, "User not found"));
+        user.setRole(role);
+        userRepository.save(user);
+        return ResponseEntity.ok(new UserResponse().convert(user));
+    }
+
+    public ResponseEntity<UserResponse> getById(Long id){
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new ExceptionWithStatusCode(404, "User not found"));
+        return ResponseEntity.ok(new UserResponse().convert(user));
     }
 }
