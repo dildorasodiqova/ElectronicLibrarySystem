@@ -20,7 +20,7 @@ public class UserDetailsComponent implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user =  userRepository.findByUsername(username).orElseThrow(()->new ExceptionWithStatusCode(400,"user.not.found"));
+        var user =  userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User.not.found"));
 
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
 

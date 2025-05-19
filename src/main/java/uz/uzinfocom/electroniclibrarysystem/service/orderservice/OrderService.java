@@ -16,4 +16,6 @@ public interface OrderService {
     ResponseEntity<OrderResponse> returnOrder(Long id);
     boolean existsByUserIdAndBookIdAndStatusIn(Long userId, Long bookId, List<OrderStatus> statuses);
 
+    ResponseEntity<List<OrderResponse>> getAll(OrderStatus orderStatus);
+
 }

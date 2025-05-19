@@ -39,6 +39,11 @@ public class BookController {
         return bookService.deleteBook(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR', 'USER')")
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<BookResponse> getById(@PathVariable Long id){
+        return bookService.getById(id);
+    }
     @PermitAll
     @GetMapping("/getAll")
     public ResponseEntity<List<BookResponse>> getAllBooks() {

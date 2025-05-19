@@ -1,6 +1,9 @@
 package uz.uzinfocom.electroniclibrarysystem.service.orderservice;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,10 @@ import uz.uzinfocom.electroniclibrarysystem.service.bookservice.BookService;
 import uz.uzinfocom.electroniclibrarysystem.service.paymentService.PaymentService;
 import uz.uzinfocom.electroniclibrarysystem.service.userservice.UserService;
 
+import javax.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,6 +99,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean existsByUserIdAndBookIdAndStatusIn(Long userId, Long bookId, List<OrderStatus> statuses) {
         return orderRepository.existsByUserEntityIdAndBookIdAndStatusIn(userId, bookId, statuses);
+    }
+
+    @Override
+    public ResponseEntity<List<OrderResponse>> getAll(OrderStatus orderStatus) {
+        List<OrderResponse> content = orderRepository.findAll(getSpecifications(orderStatus), PageRequest.of(0, 1000)).map(new OrderResponse()::convert).getContent();
+        return ResponseEntity.ok(content);
+    }
+
+
+    public Specification<Order> getSpecifications(OrderStatus orderStatus) {
+        return (root, query, criteriaBuilder) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+            if (orderStatus != null){
+                predicates.add(criteriaBuilder.equal(root.get("status"), orderStatus.name()));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 
 

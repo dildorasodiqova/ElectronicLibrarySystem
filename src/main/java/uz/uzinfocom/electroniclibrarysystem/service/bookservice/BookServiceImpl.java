@@ -55,6 +55,13 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public ResponseEntity<BookResponse> getById(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new ExceptionWithStatusCode(404, "Book not found"));
+        return ResponseEntity.ok(new BookResponse().convert(book));
+
+    }
+
+    @Override
     public void updateStatus(Long id, boolean b) {
         Book book = findById(id);
         book.setIsBron(b);

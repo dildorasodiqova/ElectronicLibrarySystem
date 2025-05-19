@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.uzinfocom.electroniclibrarysystem.DTO.req.OrderRequest;
 import uz.uzinfocom.electroniclibrarysystem.DTO.res.OrderResponse;
+import uz.uzinfocom.electroniclibrarysystem.enums.OrderStatus;
 import uz.uzinfocom.electroniclibrarysystem.service.orderservice.OrderService;
 
 import java.util.List;
@@ -44,6 +45,13 @@ public class OrderController {
     public ResponseEntity<OrderResponse> returnOrder(Long id){
         return orderService.returnOrder(id);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @GetMapping("/get-all")
+    public ResponseEntity<List<OrderResponse>> getAll(@RequestParam(required = false) OrderStatus orderStatus){
+        return orderService.getAll(orderStatus);
+    }
+
 
 
 }

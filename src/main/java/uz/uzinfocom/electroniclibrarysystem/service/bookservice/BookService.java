@@ -18,5 +18,7 @@ public interface BookService {
 
     Book findById(Long bookId);
 
+    ResponseEntity<BookResponse> getById(Long id);
+
     void updateStatus(Long id, boolean b);
 }
