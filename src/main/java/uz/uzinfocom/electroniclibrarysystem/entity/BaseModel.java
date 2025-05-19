@@ -25,10 +25,10 @@ public abstract class BaseModel implements Serializable {
     @Column(name = "created_at", nullable = false, updatable = false)
      LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = true)
      LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
+    @Column(name = "deleted_at", nullable = true)
      LocalDateTime deletedAt;
 
      Boolean isDeleted = false;

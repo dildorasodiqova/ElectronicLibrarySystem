@@ -24,6 +24,7 @@ public class BookResponse {
         response.setAuthor(book.getAuthor());
         response.setPricePerDay(book.getPricePerDay());
         response.setIsDeleted(book.getIsDeleted());
+        response.setIsBron(book.getIsBron());
         return response;
     }
 }
