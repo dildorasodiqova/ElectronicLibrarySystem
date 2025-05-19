@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserEntity extends BaseModel implements UserDetailsService {
+public class UserEntity extends BaseModel  {
     private String fullName;
     private String username;
     private String password;
@@ -29,11 +29,6 @@ public class UserEntity extends BaseModel implements UserDetailsService {
     @Enumerated(EnumType.STRING)
     Roles role;
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));

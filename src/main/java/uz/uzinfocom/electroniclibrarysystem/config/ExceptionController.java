@@ -8,18 +8,15 @@ import uz.uzinfocom.electroniclibrarysystem.DTO.res.ResponseWrapper;
 import uz.uzinfocom.electroniclibrarysystem.exception.ExceptionWithStatusCode;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 @Slf4j
 public class ExceptionController {
-
-
 
     @ExceptionHandler({ExceptionWithStatusCode.class})
     ResponseEntity<ResponseWrapper<?>> handeCustomErrors(ExceptionWithStatusCode ex, HttpServletRequest request) {
         //TODO  internationalization
 
-
+        log.error(ex.getMessage());
 
         return ResponseEntity.status(ex.getHttpStatusCode()).body(ResponseWrapper.error(ex.getHttpStatusCode(), ex.getMessageKey()));
     }

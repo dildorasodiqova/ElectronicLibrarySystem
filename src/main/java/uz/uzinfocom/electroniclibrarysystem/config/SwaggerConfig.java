@@ -1,54 +1,38 @@
 package uz.uzinfocom.electroniclibrarysystem.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import java.util.Collections;
 import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
+    @Value("${spring.application.name}")
+    private String apiTitle;
+
+    @Value("${spring.application.url}")
+    private String apiUrl;
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-                .securityContexts(Collections.singletonList(securityContext()))
-                .securitySchemes(Collections.singletonList(apiKey()));
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Your API Title")
-                .description("Your API Description")
-                .version("1.0.0")
-                .build();
-    }
-
-    private SecurityScheme apiKey() {
-        return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
-    }
-
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .build();
-    }
-
-    private List<SecurityReference> defaultAuth() {
-        SecurityReference securityReference = new SecurityReference(AUTHORIZATION, new AuthorizationScope[0]);
-        return Collections.singletonList(securityReference);
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title(apiTitle))
+                .servers(List.of(new Server().url(apiUrl)))
+                .components(new Components()
+                        .addSecuritySchemes("access_token", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .bearerFormat("JWT")
+                                .scheme("bearer"))
+                )
+                .security(Collections.singletonList(new SecurityRequirement().addList("access_token")));
     }
 }

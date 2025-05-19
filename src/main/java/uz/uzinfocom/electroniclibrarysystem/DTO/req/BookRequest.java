@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import uz.uzinfocom.electroniclibrarysystem.entity.Book;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,12 +31,14 @@ public class BookRequest {
         book.setTitle(getTitle());
         book.setAuthor(getAuthor());
         book.setPricePerDay(getPricePerDay());
+        book.setCreatedAt(LocalDateTime.now());
         return book;
     }
 
     public Book update(Book book) {
         book.setTitle(getTitle());
         book.setAuthor(getAuthor());
+        book.setUpdatedAt(LocalDateTime.now());
         book.setPricePerDay(getPricePerDay());
         return book;
     }

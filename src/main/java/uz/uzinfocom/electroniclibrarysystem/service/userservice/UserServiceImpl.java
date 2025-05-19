@@ -2,10 +2,6 @@ package uz.uzinfocom.electroniclibrarysystem.service.userservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.uzinfocom.electroniclibrarysystem.DTO.req.PasswordUpdateRequest;
@@ -20,7 +16,6 @@ import uz.uzinfocom.electroniclibrarysystem.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -85,4 +80,3 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(new UserResponse().convert(user));
     }
 }
-
