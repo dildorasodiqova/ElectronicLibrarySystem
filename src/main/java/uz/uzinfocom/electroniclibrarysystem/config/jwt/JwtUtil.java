@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Component
 @Getter
 public class JwtUtil {
-//    @Value("${jwt.secret.key}")
+    //    @Value("${jwt.secret.key}")
 //    private String SECRET_KEY;
     private final Key SECRET_KEY_V2= Keys.hmacShaKeyFor("ApeVFjUOyTmk7XYwgcYwIEsix1mALAsQhftYQqWHE8P6kcnqbZv0Uxj9HduKEvjXzz0sVYCG0ZjSBtmxadtAiQ==".getBytes());
 
@@ -38,16 +38,16 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails, UserEntity userEntity) {
+    public String generateToken(UserEntity user) {
 
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .claim("user", Map.of(
-                        "id", userEntity.getId(),
-                        "username", userEntity.getUsername(),
-                        "fullName", userEntity.getFullName(),
-                        "roles", userEntity.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
+                        "id", user.getId(),
+                        "username", user.getUsername(),
+                        "fullName", user.getFullName(),
+                        "roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
                 ))                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiry
                 .signWith(SECRET_KEY_V2, SignatureAlgorithm.HS512)
                 .compact();
@@ -62,3 +62,4 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 }
+

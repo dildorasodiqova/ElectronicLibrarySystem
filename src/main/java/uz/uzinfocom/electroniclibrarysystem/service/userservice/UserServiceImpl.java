@@ -21,9 +21,7 @@ import uz.uzinfocom.electroniclibrarysystem.repository.UserRepository;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
@@ -36,9 +34,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> login(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return ResponseEntity.ok(jwtUtil.generateToken(userDetails,
+        var user =  userRepository.findByUsername(username).orElseThrow(()-> new ExceptionWithStatusCode(400, "User not found"));
+        var isMatch =passwordEncoder.matches(password,user.getPassword());
+        if (!isMatch){
+            throw new ExceptionWithStatusCode(400, "password is wrong");
+        }
+
+        return ResponseEntity.ok(jwtUtil.generateToken(
                 userRepository.findByUsernameAndDeletedAtIsNull(username)
                         .orElseThrow(() -> new ExceptionWithStatusCode(404, "User not found with username " + username))));
 
@@ -83,3 +85,4 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(new UserResponse().convert(user));
     }
 }
+
